@@ -28,7 +28,7 @@ const useSignaling = (serverUrl: string) => {
         }
 
         case "peer-left": {
-          console.log(msg)
+          console.log(msg);
           removePeer(msg.peerId);
         }
       }
