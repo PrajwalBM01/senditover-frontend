@@ -43,7 +43,7 @@ function App() {
             className="absolute flex flex-col justify-center items-center"
             style={{ left: pos.x, top: pos.y }}
           >
-            <div className="rounded-full  bg-neutral-700 p-2 shadow">
+            <div className="rounded-full  bg-neutral-400 p-2 shadow hover:cursor-pointer">
               {peer?.deviceType === "desktop" ? (
                 <Monitor size={35} />
               ) : (
