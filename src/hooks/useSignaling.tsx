@@ -3,11 +3,13 @@ import { SignalingClient } from "../lib/signaling/SignalingClient";
 import { usePeerStore, type Peer } from "../store/peerstore";
 const useSignaling = (serverUrl: string) => {
   const socketRef = useRef<SignalingClient | null>(null);
-  const { setSelfId, addPeer, setSelf, removePeer } = usePeerStore();
+  const { setSelfId, addPeer, setSelf, removePeer, setSignalingClient } =
+    usePeerStore();
 
   useEffect(() => {
     const socket = new SignalingClient(serverUrl);
     socketRef.current = socket;
+    setSignalingClient(socket);
 
     const handelEvent = (e: Event) => {
       const msg = (e as CustomEvent).detail;
@@ -30,6 +32,11 @@ const useSignaling = (serverUrl: string) => {
         case "peer-left": {
           console.log(msg);
           removePeer(msg.peerId);
+          break;
+        }
+
+        case "update-name-change": {
+          
         }
       }
     };

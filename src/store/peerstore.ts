@@ -1,9 +1,12 @@
 import { create } from "zustand";
+import type { SignalingClient } from "../lib/signaling/SignalingClient";
 
 interface PeerStore {
   selfId: string | null;
   self: Peer | null;
   peers: Record<string, Peer>;
+  signalingClient: SignalingClient | null;
+  setSignalingClient: (client: SignalingClient) => void;
   setSelfId: (id: string) => void;
   setSelf: (self: Peer) => void;
   addPeer: (peer: Peer) => void;
@@ -21,6 +24,9 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
   selfId: null,
   self: null,
   peers: {},
+  signalingClient: null,
+
+  setSignalingClient: (client) => set({ signalingClient: client }),
 
   setSelfId: (id) => set({ selfId: id }),
   setSelf: (self) => set({ self: self }),
@@ -33,7 +39,7 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
     }),
 
   addPeer: (peer) => {
-    console.log("peeeer",peer);
+    console.log("peeeer", peer);
     set((state) => ({
       peers: { ...state.peers, [peer?.peerId]: peer },
     }));

@@ -1,10 +1,9 @@
 const RadarWaves = () => {
-  // We'll create 8 circles for a clean, performing look
   const waveCount = 8;
 
   return (
     <svg
-      className="absolute inset-0 w-full h-full pointer-events-none"
+      className="absolute inset-0 w-full h-full pointer-events-none -z-1"
       viewBox="0 0 200 200"
     >
       <defs>
@@ -14,18 +13,18 @@ const RadarWaves = () => {
             transform-box: fill-box; 
             fill: none;
             stroke: oklch(0.437 0.078 188.216);
-            stroke-width: 1.5;
+            stroke-width: 0.5;
             opacity: 0;
-            animation: pulse 3s linear infinite;
+            animation: pulse 4s cubic-bezier(0.2, 0.4, 0.4, 1) infinite;
           }
 
           @keyframes pulse {
             0% {
               transform: scale(0);
-              opacity: 0;
+              opacity: 1;
             }
             10% {
-              opacity: 0.4;
+              opacity: 0.5;
             }
             100% {
               transform: scale(1.8); /* Expand slightly beyond the viewbox */

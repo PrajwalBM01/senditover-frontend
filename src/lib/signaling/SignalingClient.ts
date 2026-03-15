@@ -69,16 +69,29 @@ export class SignalingClient extends EventTarget {
   }
 
   _getDisplayName() {
-    const randomName = uniqueNamesGenerator({
-      dictionaries: [colors, animals],
-      length: 2,
-    });
-
     const key = "p2p-display-name";
-    if (!localStorage.getItem(key)) {
-      localStorage.setItem(key, randomName);
+    let displayName = localStorage.getItem(key);
+    if (!displayName) {
+      displayName = uniqueNamesGenerator({
+        dictionaries: [colors, animals],
+        length: 2,
+      });
+      localStorage.setItem(key, displayName);
     }
-    return localStorage.getItem(key);
+    return displayName;
+  }
+
+  setNewDisplayName(newname: string, peerId: string) {
+    localStorage.setItem("p2p-display-name", newname);
+    this.send({
+      type: "name-change",
+      displayName: newname,
+      peerId: peerId,
+    });
+  }
+
+  updateDisplayName(){
+    
   }
 
   _getDeviceType() {
