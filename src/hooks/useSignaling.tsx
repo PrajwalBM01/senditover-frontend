@@ -3,8 +3,15 @@ import { SignalingClient } from "../lib/signaling/SignalingClient";
 import { usePeerStore, type Peer } from "../store/peerstore";
 const useSignaling = (serverUrl: string) => {
   const socketRef = useRef<SignalingClient | null>(null);
-  const { setSelfId, addPeer, setSelf, removePeer, setSignalingClient } =
-    usePeerStore();
+  const {
+    setSelfId,
+    addPeer,
+    setSelf,
+    removePeer,
+    setSignalingClient,
+    updatePeerName,
+    updateSelfName,
+  } = usePeerStore();
 
   useEffect(() => {
     const socket = new SignalingClient(serverUrl);
@@ -36,7 +43,13 @@ const useSignaling = (serverUrl: string) => {
         }
 
         case "update-name-change": {
-          
+          const { selfId } = usePeerStore.getState();
+          if (selfId === msg.peer.peerId) {
+            console.log("selfname");
+            updateSelfName(msg.peer.displayName);
+          } else {
+            updatePeerName(msg.peer.displayName, msg.peer.peerId);
+          }
         }
       }
     };

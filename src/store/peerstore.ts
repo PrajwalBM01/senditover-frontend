@@ -9,6 +9,8 @@ interface PeerStore {
   setSignalingClient: (client: SignalingClient) => void;
   setSelfId: (id: string) => void;
   setSelf: (self: Peer) => void;
+  updateSelfName: (displayname: string) => void;
+  updatePeerName: (displayName: string, peerId: string) => void;
   addPeer: (peer: Peer) => void;
   removePeer: (peerId: string) => void;
 }
@@ -31,6 +33,26 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
   setSelfId: (id) => set({ selfId: id }),
   setSelf: (self) => set({ self: self }),
 
+  updateSelfName: (displayname) => {
+    set((state) => ({
+      self: { ...state.self!, displayName: displayname },
+    }));
+  },
+
+  updatePeerName: (displayname, peerId) => {
+    set((state) => {
+      const peer = state.peers[peerId];
+      if (!peer) return {};
+
+      return {
+        peers: {
+          ...state.peers!,
+          [peerId]: { ...peer, displayName: displayname },
+        },
+      };
+    });
+  },
+
   removePeer: (peerId) =>
     set((state) => {
       const peers = { ...state.peers };
@@ -39,7 +61,6 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
     }),
 
   addPeer: (peer) => {
-    console.log("peeeer", peer);
     set((state) => ({
       peers: { ...state.peers, [peer?.peerId]: peer },
     }));

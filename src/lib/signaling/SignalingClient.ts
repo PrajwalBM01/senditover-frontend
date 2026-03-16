@@ -82,9 +82,9 @@ export class SignalingClient extends EventTarget {
   }
 
   setNewDisplayName(newname: string, peerId: string) {
-    localStorage.setItem("p2p-display-name", newname);
+    // localStorage.setItem("p2p-display-name", newname);
     this.send({
-      type: "name-change",
+      type: "peer-name-change",
       displayName: newname,
       peerId: peerId,
     });

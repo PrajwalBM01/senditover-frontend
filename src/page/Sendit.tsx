@@ -8,20 +8,24 @@ import EditProfile from "../components/EditProfile";
 
 const Sendit = () => {
   const { send } = useSignaling("ws://192.168.1.12:8080");
-  const { self } = usePeerStore();
+  const { self, peers } = usePeerStore();
   return (
     <div className="h-dvh w-full flex flex-col gap-2 justify-between relative p-1">
       <header className="border bg-background">Header</header>
       {/*avatar section*/}
-      <div className="border h-full w-full border-green-300"></div>
+      <div className="h-full w-full flex flex-col border">
+        {Object.values(peers).map((peer) => {
+          return <span>{peer.displayName}</span>;
+        })}
+      </div>
       {/* radar animation */}
       <RadarWaves />
       {/* avatar */}
-      {/* <div className="absolute border inset-0">
+      <div className="absolute border inset-0 flex justify-center items-center">
         <PeerAvatar device={self?.deviceType} name={self?.displayName} />
-      </div> */}
+      </div>
 
-      <footer className="bg-background p-2 px-4">
+      <footer className="bg-background p-2 px-4 z-10">
         <EditProfile />
       </footer>
     </div>
